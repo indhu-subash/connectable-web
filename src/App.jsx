@@ -1,7 +1,6 @@
-
+import { useState } from "react";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import { useState } from "react";
 import communities from "./data/communities";
 import "./App.css";
 
@@ -23,41 +22,48 @@ function App() {
       behavior: "smooth",
     });
   }
+
   if (!isLoggedIn) {
-  if (showSignup) {
+    if (showSignup) {
+      return (
+        <Signup
+          onSignup={() => {
+            setIsLoggedIn(true);
+            setShowSignup(false);
+          }}
+          onBackToLogin={() => setShowSignup(false)}
+        />
+      );
+    }
+
     return (
-      <Signup
-        onSignup={() => {
-          setIsLoggedIn(true);
-          setShowSignup(false);
-        }}
-        onBackToLogin={() => setShowSignup(false)}
+      <Login
+        onLogin={() => setIsLoggedIn(true)}
+        onGoToSignup={() => setShowSignup(true)}
       />
     );
   }
 
   return (
-    <Login
-      onLogin={() => setIsLoggedIn(true)}
-      onGoToSignup={() => setShowSignup(true)}
-    />
-  );
-}
-  return (
     <div className="app">
-      {message && <div className="toast-message">{message}</div>}
+      {message && (
+        <div className="toast-message" role="status" aria-live="polite">
+          {message}
+        </div>
+      )}
 
       <header className="navbar">
         <div className="nav-brand">
-  <h1>ConnectAble</h1>
+          <h1>ConnectAble</h1>
 
-  <button
-    className="logout-button"
-    onClick={() => setIsLoggedIn(false)}
-  >
-    Logout
-  </button>
-</div>
+          <button
+            type="button"
+            className="logout-button"
+            onClick={() => setIsLoggedIn(false)}
+          >
+            Logout
+          </button>
+        </div>
 
         <nav aria-label="Main navigation">
           <a href="#home">Home</a>
@@ -144,20 +150,18 @@ function App() {
             ))}
           </div>
         </section>
-                <section className="section light-section" id="events">
+
+        <section className="section light-section" id="events">
           <div className="section-heading">
             <p>Accessible opportunities</p>
             <h2>Upcoming Events</h2>
           </div>
 
           <div className="card-grid">
-            <div className="card">
-              <span>💼</span>
-
+            <article className="card">
+              <span aria-hidden="true">💼</span>
               <h3>Inclusive Career Fair</h3>
-
               <p>📅 July 18 · Kochi</p>
-
               <p className="badges">
                 ♿ Wheelchair Access · 💬 Captions
               </p>
@@ -170,15 +174,12 @@ function App() {
               >
                 Register
               </button>
-            </div>
+            </article>
 
-            <div className="card">
-              <span>💻</span>
-
+            <article className="card">
+              <span aria-hidden="true">💻</span>
               <h3>Assistive Technology Workshop</h3>
-
               <p>📅 July 21 · Online</p>
-
               <p className="badges">
                 💬 Captions · 🤟 Sign Language Interpreter
               </p>
@@ -186,23 +187,20 @@ function App() {
               <button
                 type="button"
                 onClick={() =>
-                  showMessage("Registered for Assistive Technology Workshop!")
+                  showMessage(
+                    "Registered for Assistive Technology Workshop!"
+                  )
                 }
               >
                 Register
               </button>
-            </div>
+            </article>
 
-            <div className="card">
-              <span>🏃</span>
-
+            <article className="card">
+              <span aria-hidden="true">🏃</span>
               <h3>Inclusive Sports Meetup</h3>
-
               <p>📅 July 27 · Kottayam</p>
-
-              <p className="badges">
-                ♿ Accessible Venue
-              </p>
+              <p className="badges">♿ Accessible Venue</p>
 
               <button
                 type="button"
@@ -212,7 +210,7 @@ function App() {
               >
                 Register
               </button>
-            </div>
+            </article>
           </div>
         </section>
 
@@ -223,56 +221,44 @@ function App() {
           </div>
 
           <div className="card-grid">
-            <div className="card">
-              <span>👩‍💻</span>
-
+            <article className="card">
+              <span aria-hidden="true">👩‍💻</span>
               <h3>Anjali</h3>
-
               <p>Technology & Accessibility</p>
 
               <button
                 type="button"
-                onClick={() =>
-                  showMessage("Mentor request sent to Anjali!")
-                }
+                onClick={() => showMessage("Mentor request sent to Anjali!")}
               >
                 Request Mentor
               </button>
-            </div>
+            </article>
 
-            <div className="card">
-              <span>👨‍🏫</span>
-
+            <article className="card">
+              <span aria-hidden="true">👨‍🏫</span>
               <h3>Rahul</h3>
-
               <p>Education & Career Guidance</p>
 
               <button
                 type="button"
-                onClick={() =>
-                  showMessage("Mentor request sent to Rahul!")
-                }
+                onClick={() => showMessage("Mentor request sent to Rahul!")}
               >
                 Request Mentor
               </button>
-            </div>
+            </article>
 
-            <div className="card">
-              <span>🧑‍💼</span>
-
+            <article className="card">
+              <span aria-hidden="true">🧑‍💼</span>
               <h3>Meera</h3>
-
               <p>Government Schemes & Job Support</p>
 
               <button
                 type="button"
-                onClick={() =>
-                  showMessage("Mentor request sent to Meera!")
-                }
+                onClick={() => showMessage("Mentor request sent to Meera!")}
               >
                 Request Mentor
               </button>
-            </div>
+            </article>
           </div>
         </section>
 
@@ -292,9 +278,9 @@ function App() {
             <label>
               <input
                 type="checkbox"
-                onChange={(e) =>
+                onChange={(event) =>
                   showMessage(
-                    e.target.checked
+                    event.target.checked
                       ? "Large Text Enabled"
                       : "Large Text Disabled"
                   )
@@ -306,9 +292,9 @@ function App() {
             <label>
               <input
                 type="checkbox"
-                onChange={(e) =>
+                onChange={(event) =>
                   showMessage(
-                    e.target.checked
+                    event.target.checked
                       ? "High Contrast Enabled"
                       : "High Contrast Disabled"
                   )
@@ -320,9 +306,9 @@ function App() {
             <label>
               <input
                 type="checkbox"
-                onChange={(e) =>
+                onChange={(event) =>
                   showMessage(
-                    e.target.checked
+                    event.target.checked
                       ? "Captions Enabled"
                       : "Captions Disabled"
                   )
@@ -334,9 +320,9 @@ function App() {
             <label>
               <input
                 type="checkbox"
-                onChange={(e) =>
+                onChange={(event) =>
                   showMessage(
-                    e.target.checked
+                    event.target.checked
                       ? "Voice Assistance Enabled"
                       : "Voice Assistance Disabled"
                   )
@@ -351,8 +337,8 @@ function App() {
       <footer>
         <h3>ConnectAble</h3>
         <p>
-          A community-first platform where accessibility isn't an add-on —
-          it's the foundation.
+          A community-first platform where accessibility isn't an add-on — it's
+          the foundation.
         </p>
       </footer>
     </div>
